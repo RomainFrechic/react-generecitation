@@ -6,42 +6,44 @@ class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      citation:null
+      citations:[{
+        auteur:'Henry David Thoreau',
+        citation:'Si je suis venu au monde, ce n’est pas pour le transformer en un lieu où il fasse bon vivre, mais pour y vivre.',
+      }],
+      random:0,
     };
   }
-	// state = {};
+	//state = {};
     
-    ComponentWillMount(){
+    componentDidMount(){
       this.setState({
-        citation:citations
+        citations:citations
       });
-       this.genererCitation();
+       
     }
 
-    genererCitation(event){
-        
-        //On transforme les citation en Array
-        const keyArray = Object.keys(citations);
-        // selectionner une citation au hasard
-        const randomKey = keyArray[Math.floor(Math.random()* keyArray.lenght)];
-  // On définis une condition pour éviter d'avoir la même citation plusieurs fois à la suite
-        if(this.state.citation === citations[randomKey].citation){
-          this.genererCitation();
-          return;
-        }
-        this.setState(citations[randomKey]);
+    genererCitation(){
+      let random = Math.floor(Math.random()*(this.state.citations.length-0)+0)
 
-    };
+      this.setState({
+          random:random
+      })
+      
 
+    }
+
+
+ 
 
 	render() {
 		return (
           <div>
-          	<Citation details={this.state} />
-          	<button onClick={e => this.genererCitation(e)} >Une autre citation!</button>
+          	<Citation details={this.state.citations[this.state.random]} />
+          	<button onClick={this.genererCitation.bind(this)} >Une autre citation!</button>
           </div>
 			)
 	}
 }
 
 export default App;
+
